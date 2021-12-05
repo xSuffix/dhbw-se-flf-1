@@ -1,31 +1,44 @@
 package controls;
 
-import controls.Button;
-import controls.ButtonType;
-import truck.ICentralUnit;
+import truck.central_unit.ICentralUnit;
 
 public class BusDoor {
 
     private final Button innerButton;
     private final Button outerButton;
     private boolean isOpen;
+    private boolean isLocked;
+    IDCardReceiver idCardReceiver;
 
     public BusDoor(ICentralUnit centralUnit, ButtonType type) {
-        this.isOpen = false;
-        this.innerButton = new Button(centralUnit, type);
+        this.innerButton = new Button(centralUnit, type); // TODO: Warum muss type übergeben werden?
         this.outerButton = new Button(centralUnit, type);
+        this.isOpen = false;
+        this.isLocked = false;
+        idCardReceiver = new IDCardReceiver(centralUnit);
     }
 
-    public void toggle() {
-        this.isOpen = !this.isOpen;
+    public void toggleOpen() {
+        if (isOpen) close();
+        else open();
     }
 
     public void close() {
-        this.isOpen = false;
+        isOpen = false;
     }
 
     public void open() {
-        this.isOpen = true;
+        if (!isLocked) isOpen = true;
+    }
+
+    public void toggleLock() {
+        if (isLocked) {
+            isLocked = false;
+            open();
+        } else {
+            close();
+            isLocked = true;
+        }
     }
 
     public boolean isOpen() {
@@ -40,4 +53,7 @@ public class BusDoor {
         return outerButton;
     }
 
+    public IDCardReceiver getIdCardReceiver() {
+        return idCardReceiver;
+    }
 }

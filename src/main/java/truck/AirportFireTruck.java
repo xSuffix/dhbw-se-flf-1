@@ -1,14 +1,10 @@
 package truck;
 
-import cabin.BatteryDisplay;
 import cabin.Cabin;
-import cabin.Seat;
-import cabin.SpeedDisplay;
-import controls.*;
 import drive.*;
 import enums.ExtinguishingType;
-import enums.SeatPositions;
 import lights.*;
+import truck.central_unit.CentralUnit;
 
 public class AirportFireTruck implements IAirportFireTruck {
     private final HeadLight[] headLightsFrontLeft;

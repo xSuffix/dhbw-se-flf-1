@@ -1,10 +1,20 @@
-package truck;
+package truck.central_unit;
 
 import controls.ButtonType;
 import controls.TurningKnobType;
 import controls.PedalType;
+import staff.IDCard;
 
 public interface ICentralUnit {
+
+    String getID();
+
+    String getCode();
+
+    void authorizePerson(String name);
+
+    void checkAuthentication(byte[] encryptedToken);
+
     void turnSteeringWheel(int rotation);
 
     void buttonPress(ButtonType type);

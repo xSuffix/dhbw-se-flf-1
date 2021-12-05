@@ -2,7 +2,7 @@ package cabin;
 
 import controls.*;
 import enums.SeatPositions;
-import truck.ICentralUnit;
+import truck.central_unit.ICentralUnit;
 
 public class Cabin {
 

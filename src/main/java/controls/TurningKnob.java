@@ -1,6 +1,6 @@
 package controls;
 
-import truck.ICentralUnit;
+import truck.central_unit.ICentralUnit;
 
 import java.util.Arrays;
 import java.util.Collections;

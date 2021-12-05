@@ -1,4 +1,4 @@
-package truck;
+package truck.central_unit;
 
 import controls.ButtonType;
 import controls.FrontLauncherOutput;
@@ -11,6 +11,10 @@ import lights.BlueLight;
 import lights.HeadLight;
 import lights.TurnSignalLight;
 import lights.WarningLight;
+import truck.IAirportFireTruck;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CentralUnit implements ICentralUnit {
 
@@ -18,10 +22,48 @@ public class CentralUnit implements ICentralUnit {
     private int frontLauncherOutput;
     private int roofLauncherOutput;
 
+    private final String name;
+    private final String code;
+    private final List<String> authorizedPersons;
+    private final IDCardDecoder idCardDecoder;
+
     public CentralUnit(IAirportFireTruck airportFireTruck) {
         this.airportFireTruck = airportFireTruck;
         this.frontLauncherOutput = 500;
         this.roofLauncherOutput = 500;
+
+        this.name = "DUS | FLF-5";
+        this.code = "6072";
+        this.authorizedPersons = new ArrayList<>();
+        this.idCardDecoder = new IDCardDecoder();
+    }
+
+    @Override
+    public String getID() {
+        return "FT-" + name.replace("|", "").replaceAll("\\s+", "-");
+    }
+
+    @Override
+    public String getCode() {
+        return code;
+    }
+
+    @Override
+    public void authorizePerson(String name) {
+        authorizedPersons.add(name);
+    }
+
+    @Override
+    public void checkAuthentication(byte[] encryptedToken) {
+        // TODO: Check for Token length
+        String token = idCardDecoder.decrypt(encryptedToken);
+        if (token != null) {
+            String id = getID();
+            String name = token.substring(id.length() + 1, token.length() - code.length() - 1);
+            boolean validToken = token.equals(id + "-" + name + "-" + code);
+            System.out.println(name);
+            System.out.println(validToken);
+        }
     }
 
     //rotates axles to the exact rotation of steering wheel plus turn on
@@ -92,8 +134,8 @@ public class CentralUnit implements ICentralUnit {
             }
             case FIRE_SELF_PROTECTION -> airportFireTruck.useFloorNozzles(100);
 
-            case LEFT_DOOR -> airportFireTruck.getCabin().getLeftDoor().toggle();
-            case RIGHT_DOOR -> airportFireTruck.getCabin().getRightDoor().toggle();
+            case LEFT_DOOR -> airportFireTruck.getCabin().getLeftDoor().toggleOpen();
+            case RIGHT_DOOR -> airportFireTruck.getCabin().getRightDoor().toggleOpen();
 
             // joystick for front launcher
             case LEFT_JOYSTICK_LEFT -> airportFireTruck.getFrontLauncher().pan();
@@ -143,6 +185,5 @@ public class CentralUnit implements ICentralUnit {
             case ROOF_LAUNCHER -> roofLauncherOutput = Math.min(Math.max(((RoofLauncherOutput) setting).getValue(), 0), 10000);
         }
     }
-
 
 }
