@@ -12,7 +12,17 @@ public class Test {
         IDCardEncoder idCardEncoder = new IDCardEncoder();
         idCardEncoder.encode(airportFireTruck.getCentralUnit(), idCard, red.getName(), "password");
 
+        System.out.println(airportFireTruck.getCabin().getRightDoor().isOpen());
+
         airportFireTruck.getCabin().getLeftDoor().getIdCardReceiver().read(idCard);
+
+        System.out.println(airportFireTruck.getCabin().getRightDoor().isOpen());
+
+        airportFireTruck.getCabin().getLeftDoor().getIdCardReceiver().read(idCard);
+
+        System.out.println(airportFireTruck.getCabin().getRightDoor().isOpen());
+
+
     }
 
 }

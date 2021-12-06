@@ -18,7 +18,7 @@ public class BusDoor {
         idCardReceiver = new IDCardReceiver(centralUnit);
     }
 
-    public void toggleOpen() {
+    public void toggle() {
         if (isOpen) close();
         else open();
     }
@@ -31,7 +31,7 @@ public class BusDoor {
         if (!isLocked) isOpen = true;
     }
 
-    public void toggleLock() {
+    public void toggleWithKey() {
         if (isLocked) {
             isLocked = false;
             open();

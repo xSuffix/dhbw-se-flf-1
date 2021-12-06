@@ -13,7 +13,7 @@ public interface ICentralUnit {
 
     void authorizePerson(String name);
 
-    void checkAuthentication(byte[] encryptedToken);
+    void validateToken(byte[] encryptedToken);
 
     void turnSteeringWheel(int rotation);
 

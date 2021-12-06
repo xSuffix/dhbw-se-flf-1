@@ -54,15 +54,17 @@ public class CentralUnit implements ICentralUnit {
     }
 
     @Override
-    public void checkAuthentication(byte[] encryptedToken) {
+    public void validateToken(byte[] encryptedToken) {
         // TODO: Check for Token length
         String token = idCardDecoder.decrypt(encryptedToken);
         if (token != null) {
             String id = getID();
             String name = token.substring(id.length() + 1, token.length() - code.length() - 1);
             boolean validToken = token.equals(id + "-" + name + "-" + code);
-            System.out.println(name);
-            System.out.println(validToken);
+            if (validToken) {
+                airportFireTruck.getCabin().getLeftDoor().toggleWithKey();
+                airportFireTruck.getCabin().getRightDoor().toggleWithKey();
+            }
         }
     }
 
@@ -134,8 +136,8 @@ public class CentralUnit implements ICentralUnit {
             }
             case FIRE_SELF_PROTECTION -> airportFireTruck.useFloorNozzles(100);
 
-            case LEFT_DOOR -> airportFireTruck.getCabin().getLeftDoor().toggleOpen();
-            case RIGHT_DOOR -> airportFireTruck.getCabin().getRightDoor().toggleOpen();
+            case LEFT_DOOR -> airportFireTruck.getCabin().getLeftDoor().toggle();
+            case RIGHT_DOOR -> airportFireTruck.getCabin().getRightDoor().toggle();
 
             // joystick for front launcher
             case LEFT_JOYSTICK_LEFT -> airportFireTruck.getFrontLauncher().pan();
